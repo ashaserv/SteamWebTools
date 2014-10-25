@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @include http://store.steampowered.com/cart*
 // @include https://store.steampowered.com/cart*
 // ==/UserScript==
@@ -9,7 +9,7 @@ function init() {
 
 	var $ = window.$J; // jQuery
 
-	var el = document.querySelector('#main_content > .rightcol');
+	var el = document.querySelector('.rightcol');
 
 	links = [
 		{href:'javascript:document.cookie=\'shoppingCartGID=0; path=/\';location.href=\'/cart/\';', text:'Очистить Корзину'},
@@ -43,7 +43,15 @@ function createBlock(title, links){
 </div>'+link.text+'</a>'
 	}
 
-	out+='Добавить SubID\'ы в корзину: <form id="addtocartsubids" method="post"><input type="hidden" name="action" value="add_to_cart"><input type="text" name="subids" placeholder="1, 2, 3"/><input type="submit" value="Добавить"></form></div></div></div>';
+function getCookie(sessionid) {
+  			var matches = document.cookie.match(new RegExp(
+  				"(?:^|; )" + sessionid.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+ 				 ));
+ 				 return matches ? decodeURIComponent(matches[1]) : undefined;
+				}
+	var ssid = getCookie ("sessionid") ;
+
+	out+='<br> Добавить SubID\'ы в корзину: <form id="addtocartsubids" method="post"><input type="hidden" name="action" value="add_to_cart"><input type="hidden" name="sessionid" value="'+ssid+'"/><input type="text" name="subids" placeholder="1, 2, 3"/><input type="submit" value="Добавить"></form></div></div></div>';
 
 	return out;
 }
