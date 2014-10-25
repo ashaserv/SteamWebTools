@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @include https://steamcommunity.com/id/*
 // @include http://steamcommunity.com/id/*
 // @include https://steamcommunity.com/profiles/*
@@ -134,7 +134,7 @@ function inventoryPageInit(){
 	}
 
 	window.setSubID=function(subid, f){
-		var str = 'SubscriptionID = ';
+		var str = 'SubID = ';
 
 		if (subid=="0"){
 
@@ -242,8 +242,24 @@ function inventoryPageInit(){
 				if(!item.descriptions)
 					item.descriptions = [];
 
-				item.descriptions.push({value:'ClassID = '+item.classid});
-				item.descriptions.push({value:'<a href="#" onclick="getSubid(event.target,\''+item.id+'\');return false">Получить SubscriptionID</a>'});
+
+
+
+//function includeJS2(url){
+//document.getElementsByTagName('body')[0].appendChild(document.createElement('span')).src=url;
+//}
+//includeJS2('http://v1t.su/projects/steam/class-sub.php?jsonp=setSubID&get=sub&value='+item.classid);
+	                       
+				item.descriptions.push({type: 'html', value:'<a href="#" onclick="getSubid(event.target,\''+item.id+'\');return false">Get SubID</a>'});
+
+
+//Показать Классид classid:
+
+				//item.descriptions.push({value:'ClassID = '+item.classid});
+
+
+				
+				
 
 				if(!ajaxTarget.descriptions[item.classid])
 					ajaxTarget.descriptions[item.classid] = item.descriptions;
