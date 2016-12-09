@@ -117,102 +117,102 @@ function SetRepBadges(selector){
 
 }
 
-function inventoryPageInit(){
+// function inventoryPageInit(){
 	// for subid detect
-	var ajaxTarget = {descriptions:[]};
-
-	window.getSubid = function(target, itemid){
-		ajaxTarget.element = target;
-
-		var item = window.UserYou.rgContexts[753][1].inventory.rgInventory[itemid];
-
-		ajaxTarget.classid = item.classid;
-		ajaxTarget.giftId = itemid;
-		ajaxTarget.giftName = encodeURIComponent(item.name);
-
-		includeJS('http://v1t.su/projects/steam/class-sub.php?jsonp=setSubID&get=sub&value='+item.classid);
-	}
-
-	window.setSubID=function(subid, f){
-		var str = 'SubID = ';
-
-		if (subid=="0"){
-
-			if(window.g_bViewingOwnProfile){
-				new window.Ajax.Request( 'http://steamcommunity.com/gifts/' + ajaxTarget.giftId + '/validateunpack', {
-					method: 'post',
-					parameters: { sessionid: window.g_sessionID },
-					onSuccess: function( transport ) {
-						window.setSubID(transport.responseJSON.packageid, true);
-					}
-				});
-				return;
-			} else
-				str += 'не известно';
-		} else {
-			str += '<a href="http://steamdb.info/sub/'+subid+'">'+subid+'</a>';
-			if(f) {
-				//send to base | Please do not spam!
-				includeJS('http://v1t.su/projects/steam/set_class-sub.php?class='+ajaxTarget.classid+'&sub='+subid+'&name='+ajaxTarget.giftName);
-			}
-		}
-		ajaxTarget.element.outerHTML=str;
-		var ds = ajaxTarget.descriptions[ajaxTarget.classid];
-		ds[ds.length-1]={value:str};
-		ds.withSubid=true;
-	}
+//	var ajaxTarget = {descriptions:[]};
+//
+//	window.getSubid = function(target, itemid){
+//		ajaxTarget.element = target;
+//
+//		var item = window.UserYou.rgContexts[753][1].inventory.rgInventory[itemid];
+//
+//		ajaxTarget.classid = item.classid;
+//		ajaxTarget.giftId = itemid;
+//		ajaxTarget.giftName = encodeURIComponent(item.name);
+//
+//		includeJS('http://v1t.su/projects/steam/class-sub.php?jsonp=setSubID&get=sub&value='+item.classid);
+//	}
+//
+//	window.setSubID=function(subid, f){
+//		var str = 'SubID = ';
+//
+//		if (subid=="0"){
+//
+//			if(window.g_bViewingOwnProfile){
+//				new window.Ajax.Request( 'http://steamcommunity.com/gifts/' + ajaxTarget.giftId + '/validateunpack', {
+//					method: 'post',
+//					parameters: { sessionid: window.g_sessionID },
+//					onSuccess: function( transport ) {
+//						window.setSubID(transport.responseJSON.packageid, true);
+//					}
+//				});
+//				return;
+//			} else
+//				str += 'не известно';
+//		} else {
+//			str += '<a href="http://steamdb.info/sub/'+subid+'">'+subid+'</a>';
+//			if(f) {
+//				//send to base | Please do not spam!
+//				includeJS('http://v1t.su/projects/steam/set_class-sub.php?class='+ajaxTarget.classid+'&sub='+subid+'&name='+ajaxTarget.giftName);
+//			}
+//		}
+//		ajaxTarget.element.outerHTML=str;
+//		var ds = ajaxTarget.descriptions[ajaxTarget.classid];
+//		ds[ds.length-1]={value:str};
+//		ds.withSubid=true;
+//	}
 
 	// multi gifts sending
-	// document.body.insertAdjacentHTML("afterBegin",
-	//	'<style>.checkedForSend{background:#366836!important}.itemcount{background:#292929;color:#FFF;font-weight:700;position:absolute;right:0;bottom:0}#inventory_logos{display:none}</style>'
-	// );
-	// window.checkedForSend={};
-	// window.checkForSend = function(giftId){
-	//	var item = window.g_ActiveInventory.selectedItem;
-	//	if(item.checkedForSend){
-	//		item.checkedForSend=false;
-	//		item.element.removeClassName('checkedForSend');
-	//		if(item._amount>1){
-	//			for(var i=0;i<item._amount;i++){
-	//				delete window.checkedForSend[item._ids[i]];
-	//			}
-	//		} else {
-	//			delete window.checkedForSend[giftId];
-	//		}
-//
-//		} else {
-//			var amount = 1;
-//			if(item._amount>1) {
-//				amount =  parseInt(prompt('Сколько выбрать? из '+item._amount, item._amount)) || 1;
-//				if (amount>item._amount)
-//					amount=item._amount;
-//			}
-//			if(amount>1){
-//				for(var i=0;i<amount;i++){
-//					window.checkedForSend[item._ids[i]]=item.name;
-//				}
-//			} else {
-//				window.checkedForSend[giftId]=item.name;
-//			}
-//
-//			item.checkedForSend=true;
-//			item.element.addClassName('checkedForSend');
-//
-//
-//		}
-//	}
-//	window.sendChecked = function(){
-//		var url = 'http://store.steampowered.com/checkout/sendgift/';
-//		// first to gid
-//		for(var gid in window.checkedForSend){
-//			break;
-//		}
-//
-//		url+=gid+'#multisend='+encodeURIComponent(JSON.stringify(window.checkedForSend))
-//
-//		window.location.href=url;
-//
-//	}
+	document.body.insertAdjacentHTML("afterBegin",
+		'<style>.checkedForSend{background:#366836!important}.itemcount{background:#292929;color:#FFF;font-weight:700;position:absolute;right:0;bottom:0}#inventory_logos{display:none}</style>'
+	);
+	window.checkedForSend={};
+	window.checkForSend = function(giftId){
+		var item = window.g_ActiveInventory.selectedItem;
+		if(item.checkedForSend){
+			item.checkedForSend=false;
+			item.element.removeClassName('checkedForSend');
+			if(item._amount>1){
+				for(var i=0;i<item._amount;i++){
+					delete window.checkedForSend[item._ids[i]];
+				}
+			} else {
+				delete window.checkedForSend[giftId];
+			}
+
+		} else {
+			var amount = 1;
+			if(item._amount>1) {
+				amount =  parseInt(prompt('Сколько выбрать? из '+item._amount, item._amount)) || 1;
+				if (amount>item._amount)
+					amount=item._amount;
+			}
+			if(amount>1){
+				for(var i=0;i<amount;i++){
+					window.checkedForSend[item._ids[i]]=item.name;
+				}
+			} else {
+				window.checkedForSend[giftId]=item.name;
+			}
+
+			item.checkedForSend=true;
+			item.element.addClassName('checkedForSend');
+
+
+		}
+	}
+	window.sendChecked = function(){
+		var url = 'http://store.steampowered.com/checkout/sendgift/';
+		// first to gid
+		for(var gid in window.checkedForSend){
+			break;
+		}
+
+		url+=gid+'#multisend='+encodeURIComponent(JSON.stringify(window.checkedForSend))
+
+		window.location.href=url;
+
+	}
 	// END multi gifts sending
 
 	//// gifts notes
