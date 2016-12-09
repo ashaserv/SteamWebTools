@@ -117,50 +117,50 @@ function SetRepBadges(selector){
 
 }
 
-function inventoryPageInit(){
+// function inventoryPageInit(){
 	// for subid detect
-	var ajaxTarget = {descriptions:[]};
-
-	window.getSubid = function(target, itemid){
-		ajaxTarget.element = target;
-
-		var item = window.UserYou.rgContexts[753][1].inventory.rgInventory[itemid];
-
-		ajaxTarget.classid = item.classid;
-		ajaxTarget.giftId = itemid;
-		ajaxTarget.giftName = encodeURIComponent(item.name);
-
-		includeJS('http://v1t.su/projects/steam/class-sub.php?jsonp=setSubID&get=sub&value='+item.classid);
-	}
+//	var ajaxTarget = {descriptions:[]};
 //
-//	window.setSubID=function(subid, f){
-//		var str = 'SubID = ';
+//	window.getSubid = function(target, itemid){
+//		ajaxTarget.element = target;
 //
-//		if (subid=="0"){
+//		var item = window.UserYou.rgContexts[753][1].inventory.rgInventory[itemid];
 //
-//			if(window.g_bViewingOwnProfile){
-//				new window.Ajax.Request( 'http://steamcommunity.com/gifts/' + ajaxTarget.giftId + '/validateunpack', {
-//					method: 'post',
-//					parameters: { sessionid: window.g_sessionID },
-//					onSuccess: function( transport ) {
-//						window.setSubID(transport.responseJSON.packageid, true);
-//					}
-//				});
-//				return;
-//			} else
-//				str += 'не известно';
-//		} else {
-//			str += '<a href="http://steamdb.info/sub/'+subid+'">'+subid+'</a>';
-//			if(f) {
-//				//send to base | Please do not spam!
-//				includeJS('http://v1t.su/projects/steam/set_class-sub.php?class='+ajaxTarget.classid+'&sub='+subid+'&name='+ajaxTarget.giftName);
-//			}
-//		}
-//		ajaxTarget.element.outerHTML=str;
-//		var ds = ajaxTarget.descriptions[ajaxTarget.classid];
-//		ds[ds.length-1]={value:str};
-//		ds.withSubid=true;
+//		ajaxTarget.classid = item.classid;
+//		ajaxTarget.giftId = itemid;
+//		ajaxTarget.giftName = encodeURIComponent(item.name);
+//
+//		includeJS('http://v1t.su/projects/steam/class-sub.php?jsonp=setSubID&get=sub&value='+item.classid);
 //	}
+
+	window.setSubID=function(subid, f){
+		var str = 'SubID = ';
+
+		if (subid=="0"){
+
+			if(window.g_bViewingOwnProfile){
+				new window.Ajax.Request( 'http://steamcommunity.com/gifts/' + ajaxTarget.giftId + '/validateunpack', {
+					method: 'post',
+					parameters: { sessionid: window.g_sessionID },
+					onSuccess: function( transport ) {
+						window.setSubID(transport.responseJSON.packageid, true);
+					}
+				});
+				return;
+			} else
+				str += 'не известно';
+		} else {
+			str += '<a href="http://steamdb.info/sub/'+subid+'">'+subid+'</a>';
+			if(f) {
+				//send to base | Please do not spam!
+				includeJS('http://v1t.su/projects/steam/set_class-sub.php?class='+ajaxTarget.classid+'&sub='+subid+'&name='+ajaxTarget.giftName);
+			}
+		}
+		ajaxTarget.element.outerHTML=str;
+		var ds = ajaxTarget.descriptions[ajaxTarget.classid];
+		ds[ds.length-1]={value:str};
+		ds.withSubid=true;
+	}
 
 	// multi gifts sending
 	document.body.insertAdjacentHTML("afterBegin",
