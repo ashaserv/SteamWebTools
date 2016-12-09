@@ -118,17 +118,19 @@ function SetRepBadges(selector){
 }
 
 function inventoryPageInit(){
+	var SWT_NOT_DUP_KEY = 'swt_notdup';
 	// for subid detect
 	var ajaxTarget = {descriptions:[]};
 
-	window.getSubid = function(target, itemid){
+	window.getSubid = function(target){
 		ajaxTarget.element = target;
 
-		var item = window.UserYou.rgContexts[753][1].inventory.rgInventory[itemid];
+		var item = window.g_ActiveInventory.selectedItem;
 
 		ajaxTarget.classid = item.classid;
-		ajaxTarget.giftId = itemid;
-		ajaxTarget.giftName = encodeURIComponent(item.name);
+		ajaxTarget.giftId = item.assetid;
+		ajaxTarget.giftName = encodeURIComponent(item.description.name);
+		
 
 		includeJS('http://v1t.su/projects/steam/class-sub.php?jsonp=setSubID&get=sub&value='+item.classid);
 	}
@@ -158,7 +160,7 @@ function inventoryPageInit(){
 		}
 		ajaxTarget.element.outerHTML=str;
 		var ds = ajaxTarget.descriptions[ajaxTarget.classid];
-		ds[ds.length-1]={value:str};
+		ds[ds.length-1]={value:str, type:'html'};
 		ds.withSubid=true;
 	}
 
@@ -232,15 +234,14 @@ function inventoryPageInit(){
 
 	//// action for gifts and tf2 items
 	var BuildHover_orig = window.BuildHover;
-	window.BuildHover = function(){
-		var item = arguments[1];
+	window.BuildHover = function( sNewInfo, item, UserYou ){
 		// gifts
 		if(window.g_ActiveInventory && (window.g_ActiveInventory.appid == 753)){
-			if ((item.contextid==1) && !item.descriptions.withClassid) {
-				item.descriptions.withClassid=true;
+			if ((item.contextid==1) && !item.description.descriptions.withClassid) {
+				item.description.descriptions.withClassid=true;
 
-				if(!item.descriptions)
-					item.descriptions = [];
+				if(!item.description.descriptions)
+					item.description.descriptions = [];
 
 
 
@@ -250,19 +251,19 @@ function inventoryPageInit(){
 //}
 //includeJS2('http://v1t.su/projects/steam/class-sub.php?jsonp=setSubID&get=sub&value='+item.classid);
 	                       
-				item.descriptions.push({type: 'html', value:'<a href="#" onclick="getSubid(event.target,\''+item.id+'\');return false">Get SubID</a>'});
+				item.description.descriptions.push({type: 'html', value:'<a href="#" onclick="getSubid(event.target,\''+item.id+'\');return false">Get SubID</a>'});
 
 
 //Показать Классид classid:
 
-				//item.descriptions.push({value:'ClassID = '+item.classid});
+				//item.description.descriptions.push({value:'ClassID = '+item.classid});
 
 
 				
 				
 
 				if(!ajaxTarget.descriptions[item.classid])
-					ajaxTarget.descriptions[item.classid] = item.descriptions;
+					ajaxTarget.descriptions[item.classid] = item.description.descriptions;
 
 
 				if(item.owner_actions) {
