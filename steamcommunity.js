@@ -191,10 +191,10 @@ function inventoryPageInit(){
 			}
 			if(amount>1){
 				for(var i=0;i<amount;i++){
-					window.checkedForSend[item._ids[i]]=item.name;
+					window.checkedForSend[item._ids[i]]=item.description.name;
 				}
 			} else {
-				window.checkedForSend[giftId]=item.name;
+				window.checkedForSend[giftId]=item.description.name;
 			}
 
 			item.checkedForSend=true;
@@ -237,11 +237,11 @@ function inventoryPageInit(){
 	window.BuildHover = function( sNewInfo, item, UserYou ){
 		// gifts
 		if(window.g_ActiveInventory && (window.g_ActiveInventory.appid == 753)){
-			if ((item.contextid==1) && !item.description.descriptions.withClassid) {
-				item.description.descriptions.withClassid=true;
+			if ((item.contextid==1) && !(item.description && item.description.descriptions && item.description.descriptions.withClassid)) {
 
 				if(!item.description.descriptions)
 					item.description.descriptions = [];
+item.description.descriptions.withClassid=true;
 
 
 
@@ -266,16 +266,16 @@ function inventoryPageInit(){
 					ajaxTarget.descriptions[item.classid] = item.description.descriptions;
 
 
-				if(item.owner_actions) {
-					item.owner_actions.push({
+				if(item.description.owner_actions) {
+					item.description.owner_actions.push({
 						link:'javascript:checkForSend("%assetid%")',
 						name:'Выбрать для отправки'
 					});
-					item.owner_actions.push({
+					item.description.owner_actions.push({
 						link:'javascript:sendChecked()',
 						name:'Отправить выбранные'
 					});
-					item.owner_actions.push({
+					item.description.owner_actions.push({
 						link:'javascript:loadGiftNote()',
 						name:'Посмотреть заметку'
 					});
