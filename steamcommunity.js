@@ -163,56 +163,56 @@ function inventoryPageInit(){
 	}
 
 	// multi gifts sending
-	document.body.insertAdjacentHTML("afterBegin",
-		'<style>.checkedForSend{background:#366836!important}.itemcount{background:#292929;color:#FFF;font-weight:700;position:absolute;right:0;bottom:0}#inventory_logos{display:none}</style>'
-	);
-	window.checkedForSend={};
-	window.checkForSend = function(giftId){
-		var item = window.g_ActiveInventory.selectedItem;
-		if(item.checkedForSend){
-			item.checkedForSend=false;
-			item.element.removeClassName('checkedForSend');
-			if(item._amount>1){
-				for(var i=0;i<item._amount;i++){
-					delete window.checkedForSend[item._ids[i]];
-				}
-			} else {
-				delete window.checkedForSend[giftId];
-			}
-
-		} else {
-			var amount = 1;
-			if(item._amount>1) {
-				amount =  parseInt(prompt('Сколько выбрать? из '+item._amount, item._amount)) || 1;
-				if (amount>item._amount)
-					amount=item._amount;
-			}
-			if(amount>1){
-				for(var i=0;i<amount;i++){
-					window.checkedForSend[item._ids[i]]=item.name;
-				}
-			} else {
-				window.checkedForSend[giftId]=item.name;
-			}
-
-			item.checkedForSend=true;
-			item.element.addClassName('checkedForSend');
-
-
-		}
-	}
-	window.sendChecked = function(){
-		var url = 'http://store.steampowered.com/checkout/sendgift/';
-		// first to gid
-		for(var gid in window.checkedForSend){
-			break;
-		}
-
-		url+=gid+'#multisend='+encodeURIComponent(JSON.stringify(window.checkedForSend))
-
-		window.location.href=url;
-
-	}
+	// document.body.insertAdjacentHTML("afterBegin",
+	//	'<style>.checkedForSend{background:#366836!important}.itemcount{background:#292929;color:#FFF;font-weight:700;position:absolute;right:0;bottom:0}#inventory_logos{display:none}</style>'
+	// );
+	// window.checkedForSend={};
+	// window.checkForSend = function(giftId){
+	//	var item = window.g_ActiveInventory.selectedItem;
+	//	if(item.checkedForSend){
+	//		item.checkedForSend=false;
+	//		item.element.removeClassName('checkedForSend');
+	//		if(item._amount>1){
+	//			for(var i=0;i<item._amount;i++){
+	//				delete window.checkedForSend[item._ids[i]];
+	//			}
+	//		} else {
+	//			delete window.checkedForSend[giftId];
+	//		}
+//
+//		} else {
+//			var amount = 1;
+//			if(item._amount>1) {
+//				amount =  parseInt(prompt('Сколько выбрать? из '+item._amount, item._amount)) || 1;
+//				if (amount>item._amount)
+//					amount=item._amount;
+//			}
+//			if(amount>1){
+//				for(var i=0;i<amount;i++){
+//					window.checkedForSend[item._ids[i]]=item.name;
+//				}
+//			} else {
+//				window.checkedForSend[giftId]=item.name;
+//			}
+//
+//			item.checkedForSend=true;
+//			item.element.addClassName('checkedForSend');
+//
+//
+//		}
+//	}
+//	window.sendChecked = function(){
+//		var url = 'http://store.steampowered.com/checkout/sendgift/';
+//		// first to gid
+//		for(var gid in window.checkedForSend){
+//			break;
+//		}
+//
+//		url+=gid+'#multisend='+encodeURIComponent(JSON.stringify(window.checkedForSend))
+//
+//		window.location.href=url;
+//
+//	}
 	// END multi gifts sending
 
 	//// gifts notes
