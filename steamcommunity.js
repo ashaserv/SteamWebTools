@@ -117,21 +117,21 @@ function SetRepBadges(selector){
 
 }
 
-// function inventoryPageInit(){
+function inventoryPageInit(){
 	// for subid detect
-//	var ajaxTarget = {descriptions:[]};
-//
-//	window.getSubid = function(target, itemid){
-//		ajaxTarget.element = target;
-//
-//		var item = window.UserYou.rgContexts[753][1].inventory.rgInventory[itemid];
-//
-//		ajaxTarget.classid = item.classid;
-//		ajaxTarget.giftId = itemid;
-//		ajaxTarget.giftName = encodeURIComponent(item.name);
-//
-//		includeJS('http://v1t.su/projects/steam/class-sub.php?jsonp=setSubID&get=sub&value='+item.classid);
-//	}
+	var ajaxTarget = {descriptions:[]};
+
+	window.getSubid = function(target, itemid){
+		ajaxTarget.element = target;
+
+		var item = window.UserYou.rgContexts[753][1].inventory.rgInventory[itemid];
+
+		ajaxTarget.classid = item.classid;
+		ajaxTarget.giftId = itemid;
+		ajaxTarget.giftName = encodeURIComponent(item.name);
+
+		includeJS('http://v1t.su/projects/steam/class-sub.php?jsonp=setSubID&get=sub&value='+item.classid);
+	}
 //
 //	window.setSubID=function(subid, f){
 //		var str = 'SubID = ';
