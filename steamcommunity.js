@@ -130,7 +130,6 @@ function inventoryPageInit(){
 		ajaxTarget.classid = item.classid;
 		ajaxTarget.giftId = item.assetid;
 		ajaxTarget.giftName = encodeURIComponent(item.description.name);
-		
 
 		includeJS('http://v1t.su/projects/steam/class-sub.php?jsonp=setSubID&get=sub&value='+item.classid);
 	}
@@ -234,14 +233,15 @@ function inventoryPageInit(){
 
 	//// action for gifts and tf2 items
 	var BuildHover_orig = window.BuildHover;
-	window.BuildHover = function( sNewInfo, item, UserYou ){
+	window.BuildHover = function(){
+		var item = arguments[1];
 		// gifts
 		if(window.g_ActiveInventory && (window.g_ActiveInventory.appid == 753)){
-			if ((item.contextid==1) && !(item.description && item.description.descriptions && item.description.descriptions.withClassid)) {
+			if ((item.contextid==1) && !item.descriptions.withClassid) {
+				item.descriptions.withClassid=true;
 
-				if(!item.description.descriptions)
-					item.description.descriptions = [];
-item.description.descriptions.withClassid=true;
+				if(!item.descriptions)
+					item.descriptions = [];
 
 
 
@@ -251,31 +251,31 @@ item.description.descriptions.withClassid=true;
 //}
 //includeJS2('http://v1t.su/projects/steam/class-sub.php?jsonp=setSubID&get=sub&value='+item.classid);
 	                       
-				item.description.descriptions.push({type: 'html', value:'<a href="#" onclick="getSubid(event.target,\''+item.id+'\');return false">Get SubID</a>'});
+				item.descriptions.push({type: 'html', value:'<a href="#" onclick="getSubid(event.target,\''+item.id+'\');return false">Get SubID</a>'});
 
 
 //Показать Классид classid:
 
-				//item.description.descriptions.push({value:'ClassID = '+item.classid});
+				//item.descriptions.push({value:'ClassID = '+item.classid});
 
 
 				
 				
 
 				if(!ajaxTarget.descriptions[item.classid])
-					ajaxTarget.descriptions[item.classid] = item.description.descriptions;
+					ajaxTarget.descriptions[item.classid] = item.descriptions;
 
 
-				if(item.description.owner_actions) {
-					item.description.owner_actions.push({
+				if(item.owner_actions) {
+					item.owner_actions.push({
 						link:'javascript:checkForSend("%assetid%")',
 						name:'Выбрать для отправки'
 					});
-					item.description.owner_actions.push({
+					item.owner_actions.push({
 						link:'javascript:sendChecked()',
 						name:'Отправить выбранные'
 					});
-					item.description.owner_actions.push({
+					item.owner_actions.push({
 						link:'javascript:loadGiftNote()',
 						name:'Посмотреть заметку'
 					});
@@ -291,7 +291,6 @@ item.description.descriptions.withClassid=true;
 					link:'http://backpack.tf/stats/'+item.app_data.def_index+'/'+item.app_data.quality+'/0',
 					name:'Цена предмета'
 				});
-
 			}
 		}
 		*/
